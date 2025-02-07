@@ -1,0 +1,9 @@
+.idea
+.terraform
+out
+build
+.gradle
+*.iml
+gradle.properties
+.DS_Store
+.trunk
