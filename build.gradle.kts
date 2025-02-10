@@ -1,11 +1,11 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 group = "io.kotless"
-version = "0.2.0"
+version = "0.3.3"
 
 plugins {
-    id("io.gitlab.arturbosch.detekt") version ("1.15.0") apply true
-    kotlin("jvm") version "1.5.31" apply false
+    id("io.gitlab.arturbosch.detekt") version ("1.23.4") apply true
+    kotlin("jvm") version "1.9.21" apply false
     `maven-publish`
 }
 
@@ -20,6 +20,7 @@ subprojects {
         mavenCentral()
         gradlePluginPortal()
         maven(url = uri("https://packages.jetbrains.team/maven/p/ktls/maven"))
+        mavenLocal()
     }
 
     val sourceSets = this.extensions.getByName("sourceSets") as SourceSetContainer
@@ -28,6 +29,7 @@ subprojects {
     task<Jar>("sourcesJar") {
         archiveClassifier.set("sources")
         from(sourceSets["main"]!!.allSource)
+        this.exclude("io/kotless/graal/aws/runtime/Adapter**")
     }
 
     publishing {
@@ -56,11 +58,11 @@ subprojects {
 
     tasks.withType<KotlinJvmCompile> {
         kotlinOptions {
-            jvmTarget = "1.8"
-            languageVersion = "1.5"
-            apiVersion = "1.5"
+            jvmTarget = "21"
+            languageVersion = "2.1"
+            apiVersion = "2.1"
 
-            freeCompilerArgs = freeCompilerArgs + listOf("-Xuse-experimental=kotlin.Experimental")
+            freeCompilerArgs = freeCompilerArgs
         }
     }
 

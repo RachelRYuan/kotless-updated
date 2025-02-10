@@ -1,5 +1,5 @@
 import io.kotless.buildsrc.Versions
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 group = rootProject.group
 version = rootProject.version
@@ -16,6 +16,6 @@ dependencies {
 
 tasks.withType<KotlinJvmCompile> {
     kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + listOf("-Xuse-experimental=io.kotless.InternalAPI")
+        freeCompilerArgs = freeCompilerArgs
     }
 }
