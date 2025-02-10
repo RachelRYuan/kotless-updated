@@ -4,7 +4,11 @@ group = "io.kotless.examples"
 version = "0.3.3"
 
 plugins {
-    kotlin("jvm") version "1.9.21" apply false
+    kotlin("jvm") version "1.9.21" apply true
+}
+
+dependencies {
+    implementation(files("../lib/io.terraformkt/entities/0.1.5/entities-0.1.5.jar"))
 }
 
 subprojects {
@@ -16,8 +20,11 @@ subprojects {
         mavenLocal()
         maven(url = uri("https://packages.jetbrains.team/maven/p/ktls/maven"))
         mavenCentral()
-        jcenter()
     }
+
+//    dependencies {
+//        implementation(files("../lib/io.terraformkt/entities/0.1.5/entities-0.1.5.jar"))
+//    }
 
     tasks.withType<KotlinJvmCompile> {
         kotlinOptions {

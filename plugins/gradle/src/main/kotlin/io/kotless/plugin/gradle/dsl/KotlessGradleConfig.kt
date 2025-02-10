@@ -25,6 +25,9 @@ class KotlessGradleConfig(project: Project) : Serializable {
      */
     var genDirectory = File(project.buildDir, "kotless-gen")
 
+    /** Version of Terraform to use. */
+    var terraformVersion = "1.10.4"
+
 
     internal val deployGenDirectory: File
         get() = File(genDirectory, "deploy")

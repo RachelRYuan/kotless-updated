@@ -31,6 +31,7 @@ internal open class TerraformDownloadTask : DefaultTask() {
     }
 
     @get:Input
+    @get:Optional
     val version: String?
         get() = project.kotless.config.cloud?.terraform?.version
 
@@ -40,14 +41,18 @@ internal open class TerraformDownloadTask : DefaultTask() {
 
     @TaskAction
     fun act() {
-        logger.lifecycle("Downloading terraform version $version for OS $os")
+        val terraformVersion = requireNotNull(
+            version.takeUnless { it.isNullOrEmpty() } ?: project.kotless.config.terraformVersion
+        ) { "Terraform version is not specified" }
 
-        Downloads.download(URL("https://releases.hashicorp.com/terraform/$version/terraform_${version}_$os.zip"), binFile.parentFile, Archive.ZIP)
+        logger.lifecycle("Downloading terraform version $terraformVersion for OS $os")
+
+        Downloads.download(URL("https://releases.hashicorp.com/terraform/$terraformVersion/terraform_${terraformVersion}_$os.zip"), binFile.parentFile, Archive.ZIP)
 
         if (Os.isFamily(Os.FAMILY_MAC) || Os.isFamily(Os.FAMILY_UNIX)) {
             CommandLine.execute("chmod", listOf("+x", binFile.absolutePath), binFile.parentFile, redirectStdout = false)
         }
 
-        logger.lifecycle("Terraform version $version for OS $os successfully downloaded")
+        logger.lifecycle("Terraform version $terraformVersion for OS $os successfully downloaded")
     }
 }
